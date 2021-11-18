@@ -10,7 +10,7 @@ export function GetReviewsForBeer(id){
 }
 
 export function GetBeersForUser(token){
-    return fetch('${settings.host}/Beer', {
+    return fetch(`${settings.host}/Beer`, {
         headers: {
             'Authorization': `bearer ${token}`
         }

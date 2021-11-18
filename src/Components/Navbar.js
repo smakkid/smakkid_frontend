@@ -1,5 +1,5 @@
 
-import {AppBar, Grid, Toolbar, IconButton, Button, Drawer} from '@mui/material';
+import {AppBar, Grid, Toolbar, IconButton, Button, Drawer, Typography} from '@mui/material';
 
 // import MenuIcon from '@mui/icons-material/Menu';
 // import { Link } from 'react-router-dom';
@@ -14,6 +14,7 @@ import UserState from '../Atoms/UserAtom'
 import {useMediaQuery} from '@mui/material'
 import { useState } from 'react';
 import { GridMenuIcon } from '@mui/x-data-grid';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
     bar: {
@@ -74,15 +75,20 @@ function Navbar() {
                     </Grid>
 
                     {!isMobile && <>
-                        <Grid item xs={8} >
-                            <Button className={classes.hrefButton} href="/shoppinglist">Innkaupalisti </Button>
+                        <Grid item xs={5} container spacing={2} alignContent="left">
+                            {/* <Button className={classes.hrefButton} href="/shoppinglist">Innkaupalisti </Button>
                             <Button className={classes.hrefButton} href="/breweries">Brugghús</Button>
-                            <Button className={classes.hrefButton} href="/types">Tegundir</Button>
-                            <Button className={classes.hrefButton} href="/">Mínir Bjórar</Button>
+                            <Button className={classes.hrefButton} href="/types">Tegundir</Button> */}
+                            {/* <Typography variant="button"><Link className={classes.hrefButton} to="/">Mínir Bjórar</Link></Typography> */}
+                            <Grid item xs={3}> <Typography variant="button"><Link className={classes.hrefButton} to="/shoppinglist">Innkaupalisti </Link> </Typography> </Grid>
+                            <Grid item xs={3}> <Typography variant="button"><Link className={classes.hrefButton} to="/breweries">Brugghús</Link> </Typography> </Grid>
+                            <Grid item xs={3}> <Typography variant="button"><Link className={classes.hrefButton} to="/types">Tegundir</Link> </Typography> </Grid>
+                            {/* <Grid item xs={3}> <Typography variant="button"><Link className={classes.hrefButton} to="/">Mínir Bjórar</Link> </Typography> </Grid> */}
+                            
                         </Grid>
                         <Grid item xs={1}>
-                            {user === null && <Button color="primary" className={classes.hrefButton} align="right" href="/login">🔑Skrá Inn</Button> }
-                            {user !== null && <Button className={classes.hrefButton} align="right" href="/profile">Prófíll</Button> }
+                            {user === null && <Typography variant="button"><Link className={classes.hrefButton} to="/login">🔑Skrá Inn</Link></Typography> }
+                            {user !== null && <Typography variant="button"><Link className={classes.hrefButton} to="/profile">Prófíll</Link></Typography> }
                         </Grid>
                     </>}
 
@@ -94,13 +100,13 @@ function Navbar() {
                             onClose={toggleDrawer(false)}
                             className={classes.drawer}
                         >  
-                            <Button color="primary" variant="link" className={classes.hrefButtonMobile} href="/shoppinglist">Innkaupalisti </Button>
-                            <Button color="primary" variant="link" className={classes.hrefButtonMobile} href="/breweries">Brugghús</Button>
-                            <Button color="primary" variant="link" className={classes.hrefButtonMobile} href="/types">Tegundir</Button>
-                            <Button color="primary" variant="link" className={classes.hrefButtonMobile} href="/">Mínir Bjórar</Button>
+                            <Typography variant="button"><Link className={classes.hrefButton} to="/shoppinglist">Innkaupalisti </Link></Typography>
+                            <Typography variant="button"><Link className={classes.hrefButton} to="/breweries">Brugghús </Link></Typography>
+                            <Typography variant="button"><Link className={classes.hrefButton} to="/types">Tegundir </Link></Typography>
+                            {/* <Typography variant="button"><Link className={classes.hrefButton} to="/">Mínir Bjórar</Button> */}
                             
-                            {user === null && <Button color="primary" className={classes.hrefButtonMobile} align="right" href="/login">🔑Skrá Inn</Button> }
-                            {user !== null && <Button className={classes.hrefButtonMobile} align="right" href="/profile">Prófíll</Button> }
+                            {user === null && <Typography variant="button"><Link className={classes.hrefButton} to="/login">🔑Skrá Inn</Link></Typography> }
+                            {user !== null && <Typography variant="button"><Link className={classes.hrefButton} to="/profile">Prófíll</Link></Typography> }
                         </Drawer>
                     </Grid>}
 
