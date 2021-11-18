@@ -56,7 +56,7 @@ function Login() {
               Skrá inn á jólabjórsmakkið
             </Typography>
             <Typography variant="h5" align="center">
-              Áttu ekki aðgang? <Link href="/register">Nýskrá</Link>
+              Áttu ekki aðgang? <Link href="register">Nýskrá</Link>
             </Typography>
           </Paper>
         </Grid>
