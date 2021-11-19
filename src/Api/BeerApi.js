@@ -71,7 +71,7 @@ export function GetTypeList(){
 }
 
 export function GetBreweryBeerList(breweryId){
-    return fetch(`${settings.host}/Beer/brewery/${breweryId}`).then(async response=>{
+    return fetch(`${settings.host}/Beer/brewery/${breweryId}/beers`).then(async response=>{
         return await response.json()
     })
 }
@@ -93,5 +93,27 @@ export function GetTypeBeerListForUser(typeId, token){
         headers: {'authorization':`bearer ${token}`}
     }).then(async response=>{
         return await response.json()
+    })
+}
+
+export function GetBreweryInfo(breweryId){
+    return fetch(`${settings.host}/Beer/brewery/${breweryId}`).then(async response=>{
+        return await response.json();
+    })
+}
+export function GetBreweryReviewList(breweryId){
+    return fetch(`${settings.host}/Beer/brewery/${breweryId}/reviews`).then(async response=>{
+        return await response.json();
+    })
+}
+
+export function GetTypeInfo(breweryId){
+    return fetch(`${settings.host}/Beer/type/${breweryId}`).then(async response=>{
+        return await response.json();
+    })
+}
+export function GetTypeReviewList(breweryId){
+    return fetch(`${settings.host}/Beer/type/${breweryId}/reviews`).then(async response=>{
+        return await response.json();
     })
 }

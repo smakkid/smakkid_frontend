@@ -78,7 +78,7 @@ function Navbar() {
                             <Button className={classes.hrefButton} href="/shoppinglist">Innkaupalisti </Button>
                             <Button className={classes.hrefButton} href="/breweries">Brugghús</Button>
                             <Button className={classes.hrefButton} href="/types">Tegundir</Button>
-                            <Button className={classes.hrefButton} href="/">Mínir Bjórar</Button>
+                            {/* <Button className={classes.hrefButton} href="/">Mínir Bjórar</Button> */}
                         </Grid>
                         <Grid item xs={1}>
                             {user === null && <Button color="primary" className={classes.hrefButton} align="right" href="/login">🔑Skrá Inn</Button> }

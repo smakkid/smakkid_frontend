@@ -93,7 +93,6 @@ function UserBeerDataTable(props) {
                     }
                     label="Sýna bjóra sem þú hefur smakkað"
                     />
-                    {isMobile?"T": "F"}
             </Grid>
             <Grid item xs={12}>
             <Paper>

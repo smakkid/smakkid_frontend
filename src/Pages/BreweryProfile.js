@@ -7,6 +7,7 @@ import { useRecoilValue } from 'recoil';
 import { GetBreweryBeerList, GetBreweryBeerListForUser } from '../Api/BeerApi';
 import UserBeerDataTable from '../Components/DataTables/UserBeerDataTable';
 import BeerDataTable from '../Components/DataTables/BeerDataTable';
+import BreweryInfo from '../Components/InfoComponents/BreweryInfo';
 
 const useFetch = (token, id, setBeers)=>{useEffect(() => {
     if(token){
@@ -40,9 +41,9 @@ function BreweryProfile() {
     useFetch(user?user.token:null, id, setBeers)
 
     return (
-        <Grid container justifyContent="center">
+        <Grid container justifyContent="center" direction="column" >
+            <BreweryInfo breweryId={id} />
             <Paper>
-                
                 {user && beers && <UserBeerDataTable beers={beers}/>}
                 {!user && beers && <BeerDataTable beers={beers}/>}
                 
