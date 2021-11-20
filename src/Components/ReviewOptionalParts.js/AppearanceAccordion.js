@@ -36,13 +36,13 @@ function AppearanceAccordion(props) {
                         <Typography>Gegnsæi {clarity==null&& "(engin einkunn)"}</Typography>                                    
                         <Slider valueLabelDisplay="off" value={clarity} label="Gegnsæi" onChange={ev=>{setClarity(ev.target.value)}}  
                             marks={[{value:0, label:'Glær'}, {value:3, label:"Milli"}, {value:6, label:'Skýjaður'}]} 
-                            min={0} max={6} step={0.5} aria-label="Default"  />
+                            min={0} max={6} step={1} aria-label="Default"  />
                     </Grid>
                     <Grid item xs={12}>
                         <Typography>Froða {headQuality==null&& "(engin einkunn)"}</Typography>
                         <Slider valueLabelDisplay="off" value={headQuality} label="Froða" onChange={ev=>{setHeadQuality(ev.target.value)}}  
                             marks={[{value:0, label:'Lítil'}, {value:3, label:"Milli"}, {value:6, label:'Þykk'}]} 
-                            min={0} max={6} step={0.5} aria-label="Default"  />
+                            min={0} max={6} step={1} aria-label="Default"  />
                     </Grid>
                 </Grid>
 
