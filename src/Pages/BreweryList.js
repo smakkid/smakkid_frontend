@@ -2,9 +2,11 @@ import { Grid, Typography, Paper, Link } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import { GetBreweryList } from '../Api/BeerApi';
+import { AlphabeticalBeerSort } from '../Helpers/AlphabeticalSort';
 
 const useFetch = (setBreweries)=>{useEffect(() => {
     GetBreweryList().then(result=>{
+        result.sort(AlphabeticalBeerSort);
         setBreweries(result);
     }).catch(error=>{
 
@@ -28,7 +30,7 @@ function BreweryList() {
                     </Grid>
                     {breweries &&
                     <Grid container spacing={2} item xs={8}>
-                        {breweries.map(brewery=><Grid item xs={12}><Link href={`/brewery/${brewery.id}`}>{brewery.name}</Link></Grid>)}
+                        {breweries.map(brewery=><Grid item xs={12} key={brewery.name}><Link href={`/brewery/${brewery.id}`}>{brewery.name}</Link></Grid>)}
                     </Grid>}
                     {!breweries && <Grid item xs={4}>Loading</Grid>}
                 </Grid>

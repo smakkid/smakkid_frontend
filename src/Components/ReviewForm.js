@@ -51,17 +51,17 @@ function ReviewForm(props){
     const [color, setColor] = useState(null);
     const [clarity, setClarity] = useState(null);
     const [headQuality, setHeadQuality] = useState(null);
-    const [appearanceDescription, setAppearanceDescription] = useState(null)
+    const [appearanceDescription, setAppearanceDescription] = useState("")
     // aroma stuff
     const [aromaIntensity, setAromaIntensity] = useState(null);
     const [aromaBalance, setAromaBalance] = useState(null);
     const [aromaImpression, setAromaImpression] = useState(null);
-    const [aromaDescription, setAromaDescription] = useState(null);
+    const [aromaDescription, setAromaDescription] = useState("");
     // Flavor stuff
     const [flavorIntensity, setFlavorIntensity] = useState(null);
     const [flavorBalance, setFlavorBalance] = useState(null);
     const [flavorImpression, setFlavorImpression] = useState(null);
-    const [flavorDescription, setFlavorDescription] = useState(null);
+    const [flavorDescription, setFlavorDescription] = useState("");
     // to make your current scoring relative to the other scoring.
     const [scorings, setScorings] = useState([]);
 
@@ -72,9 +72,9 @@ function ReviewForm(props){
 
     const handleClick = () =>{
         PostReviewForBeer(token, beerId, score, number, 
-                color, clarity, headQuality, appearanceDescription, 
-                aromaIntensity, aromaBalance, aromaImpression, aromaDescription,
-                flavorIntensity, flavorBalance, flavorImpression, flavorDescription
+                color, clarity, headQuality, appearanceDescription===''?null:appearanceDescription, 
+                aromaIntensity, aromaBalance, aromaImpression, aromaDescription===''?null:aromaDescription,
+                flavorIntensity, flavorBalance, flavorImpression, flavorDescription===''?null:flavorDescription
             ).then(data=>{
             window.location.reload();
         }).catch(error=>{
@@ -92,6 +92,11 @@ function ReviewForm(props){
 
     ratingsMoreThanCurrentScore = ratingsMoreThanCurrentScore.slice(0, 3 + Math.max(3, 3-ratingsLessThanCurrentScore.length) ).sort((x, y)=>y.averageScore-x.averageScore);
 
+    const handleNumberChange = (increment)=>{
+        const newNumber = number + increment;
+        if(newNumber < 1){ return; }
+        setNumber(newNumber);
+    }
 
     const classes = useStyles();
     return (
@@ -104,17 +109,29 @@ function ReviewForm(props){
                     </AccordionSummary>
                     <AccordionDetails>
                         <Grid container spacing={2}  justifyContent="center">
+                            <Grid item xs={12} container spacing={2} justifyContent="center">
+                                <Grid item xs={isMobile?12:4}>
+                                    {/* <TextField value={number} min={1} onChange={ev=>{if(ev.target.value>=1){setNumber(ev.target.value)}}} label="Númer Bjórs" type="number"  InputLabelProps={{ shrink: true, }} fullWidth />   */}
+                                    <Typography variant="h6">Númer bjórs í kvöld: {number} {number >= 10 && '😨'}</Typography>
+                                </Grid>
+                                <Grid item xs={1}> 
+                                    <Button variant="contained" fullWidth color="primary" onClick={()=>{handleNumberChange(-1) }} >-</Button>
+                                </Grid>
+                                <Grid item xs={1}> 
+                                    <Button variant="contained" fullWidth color="primary" onClick={()=>{handleNumberChange(1) }} >+</Button>
+                                </Grid>
+
+                            </Grid>
+
                             <Grid item container xs={12} spacing={2}>
-                                <Grid item container xs={isMobile?12:4} justifyContent="center">
+                                <Grid item container xs={isMobile?12:4} spacing={2} justifyContent="center">
                                     <Grid item xs={8}>
                                         <Slider value={score} onChange={ev=>{setScore(ev.target.value)}}   min={0} max={10} step={0.1} aria-label="Default" valueLabelDisplay="auto" />
                                     </Grid>
                                     <Grid item xs={4}>
                                         <Typography align="center">{score}/10</Typography>
                                     </Grid>
-                                    <Grid item xs={12}>
-                                        <TextField value={number} min={1} onChange={ev=>{if(ev.target.value>=1){setNumber(ev.target.value)}}} label="Númer Bjórs" type="number"  InputLabelProps={{ shrink: true, }} fullWidth />    
-                                    </Grid>
+                                    
                                 </Grid>
                                 <Grid item xs={isMobile?12:6}>
                                     <Typography variant="h6" fontWeight="bold">Þín einkunn:</Typography>

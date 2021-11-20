@@ -4,6 +4,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import {GetBeers} from '../Api/BeerApi'
 import { useEffect, useState} from 'react';
 import {makeStyles} from '@mui/styles';
+import {AlphabeticalBeerSort} from '../Helpers/AlphabeticalSort';
 // import {Redirect} from 'react-router-dom';
 
 import { Navigate } from 'react-router-dom'
@@ -11,6 +12,8 @@ import { Navigate } from 'react-router-dom'
 
 const useFetch = (setBeers)=>{useEffect(() => {
     GetBeers().then(result=>{
+
+        result.sort(AlphabeticalBeerSort);
         setBeers(result);
     }).catch(error=>{
 

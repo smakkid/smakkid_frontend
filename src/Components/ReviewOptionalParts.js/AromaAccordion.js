@@ -19,19 +19,19 @@ function AromaAccordion(props) {
             <Grid container spacing={2} justifyContent="space-evenly">
                 
                 <Grid item xs={isMobile?12:3}>
-                    <Typography>Styrkur á lykt</Typography>                                    
+                    <Typography>Styrkur á lykt {aromaIntensity==null&& "(engin einkunn)"}</Typography>                                    
                     <Slider valueLabelDisplay="off" value={aromaIntensity} label="Gegnsæi" onChange={ev=>{setAromaIntensity(ev.target.value)}}  
                         marks={[{value:0, label:'Lítill'}, {value:3, label:"Milli"}, {value:6, label:'Sterk'}]} 
                         min={0} max={6} step={1} aria-label="Default"  />
                 </Grid>
                 <Grid item xs={isMobile?12:3}>
-                    <Typography>Jafnvægi á lykt</Typography>
+                    <Typography>Jafnvægi á lykt {aromaBalance==null&& "(engin einkunn)"}</Typography>
                     <Slider valueLabelDisplay="off" value={aromaBalance} label="Froða" onChange={ev=>{setAromaBalance(ev.target.value)}}  
                         marks={[{value:0, label:'Sæt'}, {value:3, label:"Milli"}, {value:6, label:'Skörp'}]} 
                         min={0} max={6} step={1} aria-label="Default"  />
                 </Grid> 
                 <Grid item xs={isMobile?12:3}>
-                    <Typography>Gæði á lykt</Typography>
+                    <Typography>Gæði á lykt {aromaImpression==null&& "(engin einkunn)"}</Typography>
                     <Slider valueLabelDisplay="off" value={aromaImpression} label="Froða" onChange={ev=>{setAromaImpression(ev.target.value)}}  
                         marks={[{value:0, label:'Vond'}, {value:3, label:"Milli"}, {value:6, label:'Góð'}]} 
                         min={0} max={6} step={1} aria-label="Default"  />

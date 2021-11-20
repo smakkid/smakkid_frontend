@@ -7,6 +7,7 @@ import { GetBeers, GetBeersForUser} from '../Api/BeerApi';
 import UserState from '../Atoms/UserAtom';
 import UserBeerDataTable from '../Components/DataTables/UserBeerDataTable';
 import BeerDataTable from '../Components/DataTables/BeerDataTable';
+import { AlphabeticalBeerSort } from '../Helpers/AlphabeticalSort';
 
 const useFetch = (token, setBeers)=>{useEffect(() => {
     if(token){
@@ -18,8 +19,8 @@ const useFetch = (token, setBeers)=>{useEffect(() => {
     }
     else {
         GetBeers().then(result=>{
-          console.log(result);
-          setBeers(result);
+            result.sort(AlphabeticalBeerSort)
+            setBeers(result);
         }).catch(error=>{
     
         });

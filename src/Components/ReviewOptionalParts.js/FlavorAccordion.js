@@ -16,19 +16,19 @@ function FlavorAccordion(props) {
                 <Grid container spacing={2} justifyContent="space-evenly">
                     
                     <Grid item xs={12} sm={3}>
-                        <Typography>Styrkur á bragði</Typography>                                    
+                        <Typography>Styrkur á bragði {flavorIntensity==null&& "(engin einkunn)"}</Typography>                                    
                         <Slider valueLabelDisplay="off" value={flavorIntensity} label="Gegnsæi" onChange={ev=>{setFlavorIntensity(ev.target.value)}}  
                             marks={[{value:0, label:'Lítill'}, {value:3, label:"Milli"}, {value:6, label:'Sterkt'}]} 
                             min={0} max={6} step={1} aria-label="Default"  />
                     </Grid>
                     <Grid item xs={12} sm={3}>
-                        <Typography>Jafnvægi á bragði</Typography>
+                        <Typography>Jafnvægi á bragði {flavorBalance==null&& "(engin einkunn)"}</Typography>
                         <Slider valueLabelDisplay="off" value={flavorBalance} label="Froða" onChange={ev=>{setFlavorBalance(ev.target.value)}}  
                             marks={[{value:0, label:'Sætt'}, {value:3, label:"Milli"}, {value:6, label:'Biturt'}]} 
                             min={0} max={6} step={1} aria-label="Default"  />
                     </Grid> 
                     <Grid item xs={12} sm={3}>
-                        <Typography>Gæði á bragði</Typography>
+                        <Typography>Gæði á bragði {flavorImpression==null&& "(engin einkunn)"}</Typography>
                         <Slider valueLabelDisplay="off" value={flavorImpression} label="Froða" onChange={ev=>{setFlavorImpression(ev.target.value)}}  
                             marks={[{value:0, label:'Vont'}, {value:3, label:"Milli"}, {value:6, label:'Gott'}]} 
                             min={0} max={6} step={1} aria-label="Default"  />

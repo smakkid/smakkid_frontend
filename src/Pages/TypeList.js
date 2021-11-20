@@ -1,10 +1,12 @@
 import { Grid, Link, Paper, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { GetTypeList } from '../Api/BeerApi';
+import { AlphabeticalBeerSort } from '../Helpers/AlphabeticalSort';
 
 
 const useFetch = (setTypes)=>{useEffect(() => {
     GetTypeList().then(result=>{
+        result.sort(AlphabeticalBeerSort)
         setTypes(result);
     }).catch(error=>{
 
@@ -27,7 +29,7 @@ function TypeList() {
                     </Grid>
                     {types &&
                         <Grid container spacing={2} item xs={8}>
-                    {types.map(type=><Grid item xs={12}><Link href={`/type/${type.id}`}>{type.name}</Link></Grid>)}
+                    {types.map(type=><Grid item xs={12} key={type.name}><Link href={`/type/${type.id}`}>{type.name}</Link></Grid>)}
                         </Grid>}
                     {!types && <Grid item xs={4}>Loading</Grid>}
                 </Grid>
