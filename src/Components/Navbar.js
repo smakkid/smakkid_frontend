@@ -1,6 +1,6 @@
 
-import {AppBar, Grid, Toolbar, IconButton, Button, Drawer} from '@mui/material';
-
+import {AppBar, Grid, Toolbar, IconButton, Button, Drawer, Badge, Popover, Typography} from '@mui/material';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 // import MenuIcon from '@mui/icons-material/Menu';
 // import { Link } from 'react-router-dom';
 
@@ -12,8 +12,9 @@ import UserState from '../Atoms/UserAtom'
 
 
 import {useMediaQuery} from '@mui/material'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GridMenuIcon } from '@mui/x-data-grid';
+import { GetNotifications } from '../Api/AuthenticationApi';
 
 const useStyles = makeStyles({
     bar: {
@@ -46,22 +47,47 @@ const useStyles = makeStyles({
     }
 });
 
+
+const useFetch = (setNotifications, user)=>{useEffect(() => {
+    if(user == null){ return; }
+    GetNotifications(user.token).then(result=>{
+        setNotifications(result);
+    }).catch(error=>{
+
+    });
+}, [setNotifications, user])}
+
 function Navbar() {
 
     const user = useRecoilValue(UserState);
     const classes = useStyles();
     const [menuDrawerIsOpen, setMenuDrawerIsOpen] = useState(false);
     const isMobile = !useMediaQuery('(min-width:700px)');
+
+    const [notifications, setNotifications] = useState(null);
+
+    useFetch(setNotifications, user);
     
+    const [popOverOpen, setPopoverOpen] = useState(false);
+
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-          return;
-        }
-    
-        setMenuDrawerIsOpen(open)
-      };
+        return;
+    }
 
+    setMenuDrawerIsOpen(open)
+    };
 
+    const [anchorEl, setAnchorEl] = useState(null);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
     return (
         <AppBar position="static" className={classes.bar}>
             <Toolbar className={classes.toolBar}>
@@ -75,12 +101,38 @@ function Navbar() {
 
                     {!isMobile && <>
                         <Grid item xs={8} >
+                            <Button className={classes.hrefButton} href="/types">Tímalína</Button>
+                            <Button className={classes.hrefButton} href="/types">Mínir hópar</Button>
                             <Button className={classes.hrefButton} href="/shoppinglist">Innkaupalisti </Button>
                             <Button className={classes.hrefButton} href="/breweries">Brugghús</Button>
                             <Button className={classes.hrefButton} href="/types">Tegundir</Button>
                             {/* <Button className={classes.hrefButton} href="/">Mínir Bjórar</Button> */}
                         </Grid>
+                        {notifications != null && 
+                            <Grid item xs={1}>
+                                <IconButton onClick={handleClick}>
+                                <Badge color="secondary" badgeContent={notifications.length} max={999}>
+                                        <NotificationsIcon />
+                                </Badge>
+                                </IconButton>
+                                <Popover
+                                    open={open}
+                                    anchorEl={anchorEl}
+                                    onClose={handleClose}
+                                    anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                    }}
+                                >
+                                    {notifications.length === 0 && <Typography>Engar tilkynningar ennþá...</Typography>}
+                                    {notifications.length !== 0 && <Grid container>
+                                        {/* {notifications.map(notification=><Notification notification="" />)} */}
+                                    </Grid>}
+                                </Popover>
+                            </Grid>
+                        }
                         <Grid item xs={1}>
+                            
                             {user === null && <Button color="primary" className={classes.hrefButton} align="right" href="/login">🔑Skrá Inn</Button> }
                             {user !== null && <Button className={classes.hrefButton} align="right" href="/profile">Prófíll</Button> }
                         </Grid>
@@ -94,11 +146,11 @@ function Navbar() {
                             onClose={toggleDrawer(false)}
                             className={classes.drawer}
                         >  
+                            {user !== null && <Button color="primary" variant="link" className={classes.hrefButtonMobile} href="/">Tímalína</Button>}
+                            {user !== null && <Button color="primary" variant="link" className={classes.hrefButtonMobile} href="/">Minir hópar</Button>}
                             <Button color="primary" variant="link" className={classes.hrefButtonMobile} href="/shoppinglist">Innkaupalisti </Button>
                             <Button color="primary" variant="link" className={classes.hrefButtonMobile} href="/breweries">Brugghús</Button>
                             <Button color="primary" variant="link" className={classes.hrefButtonMobile} href="/types">Tegundir</Button>
-                            <Button color="primary" variant="link" className={classes.hrefButtonMobile} href="/">Mínir Bjórar</Button>
-                            
                             {user === null && <Button color="primary" className={classes.hrefButtonMobile} align="right" href="/login">🔑Skrá Inn</Button> }
                             {user !== null && <Button className={classes.hrefButtonMobile} align="right" href="/profile">Prófíll</Button> }
                         </Drawer>

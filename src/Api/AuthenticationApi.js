@@ -34,4 +34,12 @@ export function Authenticate (Username, Password){
     })
 }
 
+export function GetNotifications(token) { 
+    return fetch(`${settings.host}/Groups/invite`, {
+        headers: {'authorization':`bearer ${token}`}
+    }).then(async response=>{
+        return await response.json()
+    })
+}
+
 // export default AuthenticationApi;

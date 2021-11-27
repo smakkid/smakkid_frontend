@@ -17,15 +17,15 @@ export function GetBeersForUser(token){
     }).then(data => data.json());
 }
 
-export function PostReviewForBeer(token, beerId, score, BeerNumber, color, clarity, headQuality, appearanceDescription, aromaIntensity, aromaBalance, aromaImpression, aromaDescription, flavorIntensity, flavorBalance, flavorImpression, flavorDescription ){
-    return fetch(`${settings.host}/Beer/${beerId}/reviews`,
+export function PostReviewForBeer(token, BeerId, score, BeerNumber, color, clarity, headQuality, appearanceDescription, aromaIntensity, aromaBalance, aromaImpression, aromaDescription, flavorIntensity, flavorBalance, flavorImpression, flavorDescription ){
+    return fetch(`${settings.host}/Beer/reviews`,
     {
         method: 'POST',
         headers: {
             'content-type': 'application/json',
             'authorization': `bearer ${token}`
         },
-        body: JSON.stringify({score, BeerNumber, color, clarity, headQuality, appearanceDescription, aromaIntensity, aromaBalance, aromaImpression, aromaDescription, flavorIntensity, flavorBalance, flavorImpression, flavorDescription })
+        body: JSON.stringify({score, BeerId, BeerNumber, color, clarity, headQuality, appearanceDescription, aromaIntensity, aromaBalance, aromaImpression, aromaDescription, flavorIntensity, flavorBalance, flavorImpression, flavorDescription })
     }).then(async response=>{
         if(response.ok){
             return
