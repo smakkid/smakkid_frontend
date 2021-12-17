@@ -12,13 +12,14 @@ const useStyles = makeStyles({
 });
 
 function Register(props) {
-    const {reviews} = props;
+    const {reviews, displayBeerName} = props;
     const classes = useStyles();
-  return (
-      <Grid container className={classes.root} justifyContent="center">
-          {reviews.map(review=><ReviewListItem review={review} />)}
-      </Grid>
-  );
+    reviews.sort((a, b)=> new Date(b.timestamp)-new Date(a.timestamp))
+    return (
+        <Grid container className={classes.root} justifyContent="center" spacing={2}>
+            {reviews.map(review=><ReviewListItem key={`review:${review.id}`} review={review} displayBeerName={displayBeerName===true} />)}
+        </Grid>
+    );
 }
 
 export default Register;

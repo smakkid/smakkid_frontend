@@ -16,6 +16,8 @@ import BreweryList from './Pages/BreweryList';
 import TypeList from './Pages/TypeList';
 import BreweryProfile from './Pages/BreweryProfile';
 import TypeProfile from './Pages/TypeProfile';
+import MyGroups from './Pages/MyGroups';
+import GroupProfile from './Pages/GroupProfile';
 
 
 export function initState(snapshot) {
@@ -39,6 +41,8 @@ ReactDOM.render(
           <Route path="/" element={<Index />} />
           <Route path="shoppinglist" element={<ShoppingList />} />
           <Route path="login" element={<Login />} />
+          <Route path="groups" element={<MyGroups />} />
+          <Route path="groups/:id" element={<GroupProfile />} />
           <Route path="register" element={<Register />} />
           <Route path="beer/:id" element={<BeerProfile />} />
           <Route path="breweries" element={<BreweryList />} />

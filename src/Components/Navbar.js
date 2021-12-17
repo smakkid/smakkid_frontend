@@ -6,7 +6,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import { makeStyles } from '@mui/styles';
 
-import {useRecoilValue} from 'recoil'
+import {useRecoilValue, useSetRecoilState} from 'recoil'
 
 import UserState from '../Atoms/UserAtom'
 
@@ -15,6 +15,7 @@ import {useMediaQuery} from '@mui/material'
 import { useEffect, useState } from 'react';
 import { GridMenuIcon } from '@mui/x-data-grid';
 import { GetNotifications } from '../Api/AuthenticationApi';
+import Notification from './Notification';
 
 const useStyles = makeStyles({
     bar: {
@@ -22,6 +23,9 @@ const useStyles = makeStyles({
         // background: 'red',//'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
         // backgroundColor: 'red',
         marginBottom: '15px',
+    },
+    paper: {
+        padding: 15
     },
     toolBar: {
         // backgroundImage: 'url(https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.istockphoto.com%2Fvectors%2Fchristmas-seamless-pattern-with-snowflakes-snowflake-pattern-paper-vector-id1185239497%3Fk%3D6%26m%3D1185239497%26s%3D612x612%26w%3D0%26h%3DsNp8gZfDXWL_zFoEEm2o--CDfKH2H4SNF84HImq1fk0%3D&f=1&nofb=1)',
@@ -48,14 +52,23 @@ const useStyles = makeStyles({
 });
 
 
-const useFetch = (setNotifications, user)=>{useEffect(() => {
+const useFetch = (setNotifications, user, setUser)=>{useEffect(() => {
     if(user == null){ return; }
     GetNotifications(user.token).then(result=>{
         setNotifications(result);
     }).catch(error=>{
-
+        console.log("Caught a notification error...");
+        //delete the user from the storage.
+        setUser(null);
+        // window.location.replace('/')
     });
-}, [setNotifications, user])}
+}, [setNotifications, user, setUser])}
+
+const linkos = [
+    {title: 'Innkaupalisti', href: '/shoppinglist'},
+    {title: 'Brugghús', href: '/breweries'},
+    {title: 'Mínir hópar', href: '/groups'}
+]
 
 function Navbar() {
 
@@ -65,17 +78,17 @@ function Navbar() {
     const isMobile = !useMediaQuery('(min-width:700px)');
 
     const [notifications, setNotifications] = useState(null);
-
-    useFetch(setNotifications, user);
+    
+    const setUser = useSetRecoilState(UserState);
+    useFetch(setNotifications, user, setUser);
     
     const [popOverOpen, setPopoverOpen] = useState(false);
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-        return;
-    }
-
-    setMenuDrawerIsOpen(open)
+            return;
+        }
+        setMenuDrawerIsOpen(open)
     };
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -86,6 +99,10 @@ function Navbar() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    console.log(notifications);
+
+    
 
     const open = Boolean(anchorEl);
     return (
@@ -99,22 +116,26 @@ function Navbar() {
                         >🍻</IconButton>
                     </Grid>
 
+
                     {!isMobile && <>
                         <Grid item xs={8} >
-                            <Button className={classes.hrefButton} href="/types">Tímalína</Button>
-                            <Button className={classes.hrefButton} href="/types">Mínir hópar</Button>
                             <Button className={classes.hrefButton} href="/shoppinglist">Innkaupalisti </Button>
-                            <Button className={classes.hrefButton} href="/breweries">Brugghús</Button>
-                            <Button className={classes.hrefButton} href="/types">Tegundir</Button>
-                            {/* <Button className={classes.hrefButton} href="/">Mínir Bjórar</Button> */}
+                            {user !== null && <Button className={classes.hrefButton} href="/groups">Mínir hópar</Button> }
                         </Grid>
-                        {notifications != null && 
-                            <Grid item xs={1}>
+
+                    </>}
+
+                    {notifications != null && 
+                        <Grid item xs={1}>
+
+                            {(notifications!==null) && <>
+
                                 <IconButton onClick={handleClick}>
-                                <Badge color="secondary" badgeContent={notifications.length} max={999}>
-                                        <NotificationsIcon />
-                                </Badge>
+                                    <Badge color="secondary" badgeContent={notifications.length} max={999}>
+                                            <NotificationsIcon />
+                                    </Badge>
                                 </IconButton>
+
                                 <Popover
                                     open={open}
                                     anchorEl={anchorEl}
@@ -123,20 +144,24 @@ function Navbar() {
                                     vertical: 'bottom',
                                     horizontal: 'left',
                                     }}
-                                >
-                                    {notifications.length === 0 && <Typography>Engar tilkynningar ennþá...</Typography>}
-                                    {notifications.length !== 0 && <Grid container>
-                                        {/* {notifications.map(notification=><Notification notification="" />)} */}
-                                    </Grid>}
+                                    > 
+                                    <Grid container  className={classes.paper}>
+                                        {notifications.length === 0 && <Typography>Engar tilkynningar ennþá...</Typography>}
+                                        {notifications.length !== 0 && 
+                                            notifications.map(notification=><Notification notification={notification}/>)
+                                        }
+                                    </Grid>
                                 </Popover>
-                            </Grid>
-                        }
-                        <Grid item xs={1}>
-                            
+                            </> }
+                        </Grid>
+                    }
+
+                    {!isMobile && 
+                        <Grid item xs={1}>    
                             {user === null && <Button color="primary" className={classes.hrefButton} align="right" href="/login">🔑Skrá Inn</Button> }
                             {user !== null && <Button className={classes.hrefButton} align="right" href="/profile">Prófíll</Button> }
                         </Grid>
-                    </>}
+                    }
 
                     {isMobile&&<Grid item xs={3}>
                         <Button onClick={toggleDrawer(true)}><GridMenuIcon /></Button>
@@ -146,11 +171,9 @@ function Navbar() {
                             onClose={toggleDrawer(false)}
                             className={classes.drawer}
                         >  
-                            {user !== null && <Button color="primary" variant="link" className={classes.hrefButtonMobile} href="/">Tímalína</Button>}
                             {user !== null && <Button color="primary" variant="link" className={classes.hrefButtonMobile} href="/">Minir hópar</Button>}
                             <Button color="primary" variant="link" className={classes.hrefButtonMobile} href="/shoppinglist">Innkaupalisti </Button>
-                            <Button color="primary" variant="link" className={classes.hrefButtonMobile} href="/breweries">Brugghús</Button>
-                            <Button color="primary" variant="link" className={classes.hrefButtonMobile} href="/types">Tegundir</Button>
+
                             {user === null && <Button color="primary" className={classes.hrefButtonMobile} align="right" href="/login">🔑Skrá Inn</Button> }
                             {user !== null && <Button className={classes.hrefButtonMobile} align="right" href="/profile">Prófíll</Button> }
                         </Drawer>

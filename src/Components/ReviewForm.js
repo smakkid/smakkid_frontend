@@ -82,15 +82,17 @@ function ReviewForm(props){
         });
     };
 
-    const relatives = 6; // +1..
-    let ratingsLessThanCurrentScore = scorings.filter(x=>x.averageScore < score).sort((x, y)=>y.averageScore-x.averageScore);
-    let ratingsMoreThanCurrentScore = scorings.filter(x=>x.averageScore > score).sort(x=>x.averageScore)
-    
+    let ratingsLessThanCurrentScore = scorings.filter(x=>x.averageScore <= score).sort((x, y)=>y.averageScore-x.averageScore);
+    let ratingsMoreThanCurrentScore = scorings.filter(x=>x.averageScore >= score).sort((x, y)=>x.averageScore-y.averageScore)
+
+    // the number of relative reviews should be 6, this means that if the number of reviews below x is less than 3, add the difference ....
+    let allowed_extra_less_thans = Math.max(0, 3-ratingsMoreThanCurrentScore.length);
+    let allowed_extra_more_thans = Math.max(0, 3-ratingsLessThanCurrentScore.length);
 
     // if the length of the other options are less than 3, add that difference 
-    ratingsLessThanCurrentScore = ratingsLessThanCurrentScore.slice(0, 3 + Math.max(3, 3-ratingsMoreThanCurrentScore.length) ).sort((x, y)=>y.averageScore-x.averageScore);
+    ratingsLessThanCurrentScore = ratingsLessThanCurrentScore.slice(0, 3+allowed_extra_less_thans).sort((x, y)=>y.averageScore-x.averageScore);
 
-    ratingsMoreThanCurrentScore = ratingsMoreThanCurrentScore.slice(0, 3 + Math.max(3, 3-ratingsLessThanCurrentScore.length) ).sort((x, y)=>y.averageScore-x.averageScore);
+    ratingsMoreThanCurrentScore = ratingsMoreThanCurrentScore.slice(0, 3+allowed_extra_more_thans).sort((x, y)=>y.averageScore-x.averageScore);
 
     const handleNumberChange = (increment)=>{
         const newNumber = number + increment;
